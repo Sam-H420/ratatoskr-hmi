@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Tiny5&display=swap');
+@import "tailwindcss";
+
+/* .saira-stencil-one-regular {
+  font-family: "Saira Stencil One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.tiny5-regular {
+  font-family: "Tiny5", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+} */
+
+.app {
+  font-family: "consolas", sans-serif;
+}
+
+.theme-dark-container {
+  background-color: #313131;
+  color: #a0a0a0;
+}
+
+.theme-dark-back {
+  background-color: #242424;
+}
+
+.theme-dark-window {
+  background: linear-gradient(180deg, #3e3e3e 0%, #313131 40%);
+  /* just bottom border */
+  border-bottom: 1px solid #242424;
+  /* color: #80b62e; */
+  /* bold text */
+  /* font-weight: bold; */
+}

@@ -18,7 +18,7 @@ class ToskrData:
   
   def generate_battery(self, time):
     # return a sine wave function for battery with 2 decimal places
-    self.battery = round(0.2 * math.sin(0.1*time) + 0.5, 2)
+    self.battery = round(20 * math.sin(0.1*time) + 50, 2)
     return self.battery
   
   def setStatus(self, status):
@@ -39,6 +39,10 @@ class ToskrData:
     return {
       "speed": self.speed,
       "battery": self.battery,
+    }
+  
+  def getStatus(self):
+    return {
       "status": self.status
     }
   

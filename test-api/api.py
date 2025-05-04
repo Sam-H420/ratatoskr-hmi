@@ -3,6 +3,7 @@ import json
 import uvicorn
 import cv2
 import base64
+import time
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,6 +14,9 @@ from data import ToskrData, TaskList, Task, MapData
 
 app = FastAPI()
 toskr_data = ToskrData()
+
+laststatus = toskr_data.getStatus()
+
 toskr_tasks = TaskList(
     [
         Task(0, "Task 1", "A", "B"),
@@ -37,6 +41,7 @@ map_data = MapData([
     "x": 0,
     "y": 0
 })
+
 last_map_data = map_data.getMap()
 last_position = map_data.getPosition()
 
@@ -111,6 +116,31 @@ async def return_toskr():
     """Return the toskr."""
     data = toskr_data.setStatus(2)
     return {"status": data}
+
+@app.get("/status")
+async def get_status():
+    """Get the current status of the toskr."""
+    data = toskr_data.getStatus()
+    return data
+
+@app.get("/statusupdate")
+async def status_update():
+    """Stream status updates using server-sent events."""
+    async def event_generator():
+        while True:
+            data = toskr_data.getStatus()
+            global laststatus
+            if data == laststatus:
+                await asyncio.sleep(0.01)
+                continue
+            else:
+                laststatus = data
+                yield {
+                    "event": "status_update",
+                    "data": json.dumps(data)
+                }
+                await asyncio.sleep(0.01)
+    return EventSourceResponse(event_generator())
 
 @app.get("/current")
 async def get_current_reading():
@@ -237,8 +267,22 @@ async def position_updates():
 
 @app.get("/ping")
 async def ping():
-    """Ping endpoint."""
-    return {"message": "pong"}
+    """stream ping updates using server-sent events."""
+    async def event_generator():
+        while True:
+            data = "pong"
+            yield {
+                "event": "ping",
+                "data": json.dumps(data)
+            }
+            await asyncio.sleep(0.01)
+    return EventSourceResponse(event_generator())
+
+@app.get("/connect")
+async def connect():
+    """Connect to the server."""
+    async def event_generator():
+        return "pong"
 
 if __name__ == "__main__":
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
