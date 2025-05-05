@@ -1,9 +1,14 @@
 <script>
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import logo from '$lib/assets/toskr-logo.svg';
+	import BarButton from '../Components/BarButton.svelte';
+	import Win from '../Components/Win.svelte';
 
 	/** @type {import('./$types').LayoutProps} */
 	let { children } = $props();
+
+	let about = $state(false);
 
 	let pingData = $state(null);
 	let pingSource = $state(undefined);
@@ -80,46 +85,62 @@
 </script>
 
 <div class="app min-h-dvh flex flex-col">
-		<div class="top-content w-full flex flex-row justify-between items-center p-2 theme-dark-container">
-			{#if pingData}
-				<p>{time}</p>
-				{:else}
-				<p>Loading...</p>
-			{/if}
-			{#if currentReading}
-				<p>Status: {currentReading.status}</p>
-				{:else}
-				<p>Loading...</p>
-			{/if}
-				<p>Ping</p>
+	{#if about}
+		<div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-[#242424b4] z-50">
+			<div class="absolute h-1/2 flex justify-center items-center theme-dark-container rounded-md justify-self-center">
+				<Win title="About" onclick={() => { about = !about; }}>
+					<iframe class="p-2" width="560" height="315" src="https://www.youtube.com/embed/fKopy74weus?si=pjRPMNFXNZkJtQCX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+				</Win>
+			</div>
 		</div>
+	{/if}
+	<div class="top-content w-full flex flex-row justify-between items-center p-2 theme-dark-container">
+		{#if pingData}
+			<p>{time}</p>
+			{:else}
+			<p>Loading...</p>
+		{/if}
+		{#if currentReading}
+			<p>
+				{currentReading.status == 0 ? 'On Duty' : currentReading.status == 1 ? 'Stopped' : 'Returning...'}
+			</p>
+			{:else}
+			<p>Loading...</p>
+		{/if}
+			<p>Ping</p>
+	</div>
 
-		<div class="flex flex-grow justify-start items-center content-stretch theme-dark-back">
-				<div class="flex place-self-stretch flex-col w-20 justify-between items-center p-2 m-2 theme-dark-container">
-					<div>
-						<p>Logo</p>
-						<p>About</p>
-					</div>
-					<div>
-						{#if currentReading}
-							{#if currentReading.status == 0}
-								<button onclick={stopToskr} type="button" >Stop</button>
-							{:else if currentReading.status == 1}
-								<button onclick={startToskr} type="button" >Start</button>
-							{:else if currentReading.status == 2}
-								<button onclick={stopToskr} type="button" >Stop</button>
-							{/if}
-							<button onclick={returnToskr} type="button" >Return</button>
-						{/if}
-					</div>
+	<div class="flex flex-grow justify-start items-center content-stretch theme-dark-back">
+			<div class="flex place-self-stretch flex-col w-20 justify-between items-center p-2 m-2 theme-dark-container rounded-md"> <!-- bg-gradient-to-b from-[#3e3e3e] from-0% to-[#313131] to-1% -->
+				<div>
+					<img src={logo} alt="TOSKR Logo" class="w-16 h-16 pb-2" />
+					<BarButton title="About" iconClass="cuida--info-outline" onclick={() => {
+						about = !about;
+						console.log('About clicked');
+					}} />
 				</div>
-	
-				<main class="flex flex-col md:flex-row place-self-stretch justify-stretch items-center m-2 w-full">
-					{#if pingData}
-						{@render children()}
-					{:else}
-						<p>Loading...</p>
+				<div>
+					{#if currentReading}
+						{#if currentReading.status == 0}
+							<BarButton title="Stop" iconClass="cuida--power-outline" onclick={stopToskr} />
+							<BarButton title="Return" iconClass="cuida--loading-left-outline" onclick={returnToskr} />
+						{:else if currentReading.status == 1}
+							<BarButton title="Start" iconClass="cuida--power-outline text-[#80b62e]" onclick={startToskr} />
+							<BarButton title="Return" iconClass="cuida--loading-left-outline" onclick={returnToskr} />
+						{:else if currentReading.status == 2}
+							<BarButton title="Stop" iconClass="cuida--power-outline" onclick={stopToskr} />
+							<BarButton title="Return" iconClass="cuida--loading-left-outline" onclick={returnToskr} disabled="true" />
+						{/if}
 					{/if}
-				</main>
-		</div>
+				</div>
+			</div>
+
+			<main class="flex flex-col md:flex-row place-self-stretch justify-stretch items-center m-2 w-full">
+				{#if pingData}
+					{@render children()}
+				{:else}
+					<p>Loading...</p>
+				{/if}
+			</main>
+	</div>
 </div>

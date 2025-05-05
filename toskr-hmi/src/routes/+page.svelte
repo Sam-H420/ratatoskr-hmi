@@ -104,7 +104,7 @@
 
 <!-- add task form popup -->
 {#if messageShown}
-  <div class="absolute top-0 left-0 w-full h-full opacity-80 flex justify-center items-center theme-dark-back">
+  <div class="absolute z-50 top-0 left-0 w-full h-full opacity-80 flex justify-center items-center theme-dark-back">
     <div>
       <h2>Add Task</h2>
       <form onsubmit={createTask} >
@@ -121,7 +121,7 @@
 
 <div class="flex flex-col md:w-2/3 md:h-full w-full h-1/3 mr-1">
   <div class="flex flex-row md:h-1/2 h-full w-full mb-1">
-    <div class="flex w-1/2 mr-1 justify-center items-center theme-dark-container">
+    <div class="flex w-1/2 mr-1 justify-center items-center theme-dark-container rounded-md">
       <Win title="Speed">
         <div class="flex" style="font-size: 4em;">
           {#if currentReading}
@@ -132,7 +132,7 @@
           </div>
         </Win>
       </div>
-      <div class="flex w-1/2 ml-1 justify-center items-center theme-dark-container">
+      <div class="flex w-1/2 ml-1 justify-center items-center theme-dark-container rounded-md">
         <Win title="Battery">
           <div class="flex" style="font-size: 4em;">
             {#if currentReading}
@@ -144,16 +144,20 @@
         </Win>
       </div>
     </div>
-    <div class="md:flex md:static flex-row h-1/2 w-full mt-1 hidden absolute theme-dark-container">
+    <div class="md:flex md:static flex-row h-1/2 w-full mt-1 hidden absolute theme-dark-container rounded-md">
       <Win title="Tasks">
           {#if tasks}
-            <button onclick={() => {
-              messageShown = true;
-            }} >Add Task</button>
-            <ul>
+            <button class="theme-dark-float-button rounded-md shadow-md shadow-[#242424]" onclick={() => {messageShown = true;}} aria-label="Add Task">
+              <div class="p-2 flex flex-col justify-center items-center">
+                <span class="cuida--plus-outline"></span>
+              </div>
+            </button>
+            <ul class="flex flex-col w-full h-full overflow-y-auto">
               {#each tasks.tasks as task}
-                <li>
-                  {task.name}
+                <li class="flex flex-row w-full justify-between items-center p-2 border-b-1 border-[#242424]">
+                  <div>
+                    <p>{task.name}</p>
+                  </div>
                   <button onclick={() => {
                     fetch(`http://localhost:8000/tasks/delete?id=${task.id}`)
                     .then(response => response.json())
@@ -164,7 +168,7 @@
                 </li>
               {/each}
             </ul>
-          {:else}
+          {:else} 
             <p>Loading...</p>
           {/if}
         </Win>
@@ -172,14 +176,14 @@
   </div>
 
 <div class="flex flex-col md:w-1/3 md:h-full w-full h-full ml-1">
-  <div class="flex aspect-4/3 w-full mb-1 items-center justify-center theme-dark-container">
+  <div class="flex aspect-4/3 w-full mb-1 items-center justify-center theme-dark-container rounded-md">
     <Win title="Camera">
       {#if rframeData}
         <img src="data:image/jpg;base64,{rframeData.frame}" alt="">
       {/if}
     </Win>
   </div>
-  <div class="flex h-full w-full mt-1 items-center justify-center theme-dark-container">
+  <div class="flex h-full w-full mt-1 items-center justify-center theme-dark-container rounded-md">
     <Win title="Map">
       <div></div>
       <!-- {#if mapData}
