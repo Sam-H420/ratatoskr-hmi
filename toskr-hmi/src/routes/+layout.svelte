@@ -36,7 +36,7 @@
 			timeMs = Date.now();
 			seconds = Math.floor((timeMs / 1000) % 60);
 			minutes = Math.floor((timeMs / (1000 * 60)) % 60);
-			hours = Math.floor((timeMs / (1000 * 60 * 60)) % 24);
+			hours = Math.floor((timeMs / (1000 * 60 * 60)) % 24) - 5;
 			time = `${hours}:${minutes}:${seconds}`;
 		});
 		
@@ -46,7 +46,7 @@
     });
 
     return () => {
-      if (eventSource) eventSource.close();
+      // if (eventSource) eventSource.close();
     };
   });
 
@@ -84,11 +84,11 @@
 	}
 </script>
 
-<div class="app min-h-dvh flex flex-col">
+<div class="app h-dvh max-h-dvh flex flex-col">
 	{#if about}
 		<div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-[#242424b4] z-50">
-			<div class="absolute h-1/2 flex justify-center items-center theme-dark-container rounded-md justify-self-center">
-				<Win title="About" onclick={() => { about = !about; }}>
+			<div class="absolute flex justify-center items-center theme-dark-container rounded-md justify-self-center">
+				<Win title="About" onclick={() => { about = !about; }} icon="cuida--x-outline">
 					<iframe class="p-2" width="560" height="315" src="https://www.youtube.com/embed/fKopy74weus?si=pjRPMNFXNZkJtQCX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 				</Win>
 			</div>
@@ -112,8 +112,8 @@
 
 	<div class="flex flex-grow justify-start items-center content-stretch theme-dark-back">
 			<div class="flex place-self-stretch flex-col w-20 justify-between items-center p-2 m-2 theme-dark-container rounded-md"> <!-- bg-gradient-to-b from-[#3e3e3e] from-0% to-[#313131] to-1% -->
-				<div>
-					<img src={logo} alt="TOSKR Logo" class="w-16 h-16 pb-2" />
+				<div class="flex flex-col w-full justify-center items-center">
+					<img src={logo} alt="TOSKR Logo" class="pb-2" />
 					<BarButton title="About" iconClass="cuida--info-outline" onclick={() => {
 						about = !about;
 						console.log('About clicked');

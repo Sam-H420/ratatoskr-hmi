@@ -6,7 +6,7 @@
   export let value = 0
   export let arrows = ''
   export let thresholds = '70,90'
-  export let colors = '#80b62e,#e8523b'
+  export let colors = '#525C71,#e8523b'
 
   let color
   let rotate
@@ -75,7 +75,7 @@
     height: 0;
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
-    border-left: 6px solid #000;
+    border-left: 6px solid #a0a0a0;
   }
   .gauge-overflow {
     position: absolute;

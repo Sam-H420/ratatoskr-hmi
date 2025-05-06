@@ -1,4 +1,5 @@
 <script>
+  import '../app.css';
   import Win from "../Components/Win.svelte";
   import { onMount } from 'svelte';
   import NumberGauge from "../Components/NumberGauge.svelte";
@@ -70,13 +71,13 @@
     // }
 
     return () => {
-      if (eventSource) {
-        eventSource.close();
-        frameSource.close();
-        tasksSource.close();
-        // mapSource.close();
-        // toskrPosSource.close();
-      }
+      // if (eventSource) {
+      //   eventSource.close();
+      //   frameSource.close();
+      //   tasksSource.close();
+      //   // mapSource.close();
+      //   // toskrPosSource.close();
+      // }
     };
   });
 
@@ -102,19 +103,19 @@
   }
 </script>
 
-<!-- add task form popup -->
 {#if messageShown}
-  <div class="absolute z-50 top-0 left-0 w-full h-full opacity-80 flex justify-center items-center theme-dark-back">
-    <div>
-      <h2>Add Task</h2>
-      <form onsubmit={createTask} >
-        <input type="number" name="id" placeholder="Task ID" />
-        <input type="text" name="name" placeholder="Task Name" />
-        <input type="text" name="start" placeholder="Start" />
-        <input type="text" name="end" placeholder="Goal" />
-        <input type="number" name="priority" placeholder="Priority" />
-        <button type="submit" >Add Task</button>
-      </form>
+  <div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-[#242424b4] z-50">
+    <div class="absolute flex justify-center items-center theme-dark-container rounded-md justify-self-center">
+      <Win title="Add Task" onclick={() => { messageShown = !messageShown; }} icon="cuida--x-outline">
+        <form onsubmit={createTask} class="flex flex-col w-full h-full justify-center items-center p-4 gap-2">
+          <input type="number" name="id" placeholder="Task ID" class="theme-dark-input" />
+          <input type="text" name="name" placeholder="Task Name" class="theme-dark-input" />
+          <input type="text" name="start" placeholder="Start" class="theme-dark-input" />
+          <input type="text" name="end" placeholder="Goal" class="theme-dark-input" />
+          <input type="number" name="priority" placeholder="Priority" class="theme-dark-input" />
+          <button type="submit" class="theme-dark-window-button p-2" >Add Task</button>
+        </form>
+      </Win>
     </div>
   </div>
 {/if}
@@ -145,18 +146,22 @@
       </div>
     </div>
     <div class="md:flex md:static flex-row h-1/2 w-full mt-1 hidden absolute theme-dark-container rounded-md">
-      <Win title="Tasks">
+      <Win title="Tasks" onclick={() => {messageShown = true;}} icon="cuida--plus-outline">
           {#if tasks}
-            <button class="theme-dark-float-button rounded-md shadow-md shadow-[#242424]" onclick={() => {messageShown = true;}} aria-label="Add Task">
+            <!-- <button class="theme-dark-float-button z-10 rounded-md shadow-md shadow-[#242424]" onclick={() => {messageShown = true;}} aria-label="Add Task">
               <div class="p-2 flex flex-col justify-center items-center">
                 <span class="cuida--plus-outline"></span>
               </div>
-            </button>
-            <ul class="flex flex-col w-full h-full overflow-y-auto">
+            </button> -->
+            <ul class="flex flex-col w-full h-full overflow-y-scroll box-border">
               {#each tasks.tasks as task}
-                <li class="flex flex-row w-full justify-between items-center p-2 border-b-1 border-[#242424]">
-                  <div>
-                    <p>{task.name}</p>
+                <li class="flex flex-row w-full justify-between items-center p-2 pl-4 border-b-1 border-[#242424]">
+                  <div class="flex flex-row w-full justify-start items-center">
+                    {task.id}
+                    <div class="flex flex-col w-full ml-5">
+                      <p>{task.name}</p>
+                      <p class="text-[#747474]">{task.start} - {task.end}</p>
+                    </div>
                   </div>
                   <button onclick={() => {
                     fetch(`http://localhost:8000/tasks/delete?id=${task.id}`)
@@ -164,7 +169,11 @@
                     .then(data => {
                       console.log('Task deleted:', data);
                     })
-                  }}>Delete</button>
+                  }} aria-label="Deelete Task" class="theme-dark-window-button">
+                    <div class="p-2 flex flex-col justify-center items-center">
+                      <span class="cuida--trash-outline"></span>
+                    </div>
+                  </button>
                 </li>
               {/each}
             </ul>

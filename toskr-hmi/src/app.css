@@ -1,14 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
 @import "tailwindcss";
-
-/* .saira-stencil-one-regular {
-  font-family: "Saira Stencil One", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-} */
 
 .app {
   font-family: "consolas", sans-serif;
+  scrollbar-color: #747474 #3b3b3b;
+  scrollbar-width: thin;
+  
 }
 
 .theme-dark-container {
@@ -22,8 +18,17 @@
 }
 
 .theme-dark-window {
-  /* background: linear-gradient(180deg, #3e3e3e 0%, #313131 40%); */
   border-bottom: 1px solid #242424;
+}
+
+.theme-dark-window-button {
+  background-color: #313131;
+  color: #a0a0a0;
+  border-radius: 5px;
+}
+.theme-dark-window-button:hover {
+  background-color: #525C71;
+  color: #a0a0a0;
 }
 
 .theme-dark-bar-button {
@@ -32,21 +37,21 @@
   justify-content: center;
   align-items: center;
   color: #747474;
-  /* border-bottom: #242424 solid 1px; */
-  border-top: #4b4b4b solid 1px;
+  border-radius: 5px;
   background-color: #313131;
 }
 
 .theme-dark-bar-button:hover {
-  background-color: #2d2d2d ;
-  border-bottom: #4b4b4b solid 1px;
-  border-top: #242424 solid 1px;
+  background-color: #525C71;
+  color: #a0a0a0;
+  /* border-bottom: #4b4b4b solid 1px;
+  border-top: #242424 solid 1px; */
 }
 
 .theme-dark-bar-button:disabled {
   background-color: #2d2d2d ;
-  border-bottom: #4b4b4b solid 1px;
-  border-top: #242424 solid 1px;
+  /* border-bottom: #4b4b4b solid 1px;
+  border-top: #242424 solid 1px; */
   color: #4b4b4b;
 }
 
@@ -60,6 +65,18 @@
 
 .theme-dark-float-button:hover {
   background-color: #3b3b3b;
+}
+
+.theme-dark-input {
+  background-color: #3b3b3b;
+  color: #a0a0a0;
+  border-radius: 5px;
+  padding: 0.5rem;
+}
+
+.theme-dark-input:focus {
+  outline: none;
+  border: #525C71 solid 1px;
 }
 
 .cuida--x-outline {
