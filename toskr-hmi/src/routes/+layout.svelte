@@ -84,33 +84,34 @@
 	}
 </script>
 
-<div class="app h-dvh max-h-dvh flex flex-col">
-	{#if about}
-		<div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-[#242424b4] z-50">
-			<div class="absolute flex justify-center items-center theme-dark-container rounded-md justify-self-center">
-				<Win title="About" onclick={() => { about = !about; }} icon="cuida--x-outline">
-					<iframe class="p-2" width="560" height="315" src="https://www.youtube.com/embed/fKopy74weus?si=pjRPMNFXNZkJtQCX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-				</Win>
+<div class="app h-dvh max-h-dvh flex overflow-hidden">
+	<div class="flex flex-col h-full w-full overflow-hidden">
+		{#if about}
+			<div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-[#242424b4] z-50">
+				<div class="absolute flex justify-center items-center theme-dark-container rounded-md justify-self-center">
+					<Win title="About" onclick={() => { about = !about; }} icon="cuida--x-outline">
+						<iframe class="p-2" width="560" height="315" src="https://www.youtube.com/embed/fKopy74weus?si=pjRPMNFXNZkJtQCX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+					</Win>
+				</div>
 			</div>
+		{/if}
+		<div class="top-content w-full min-h-10 max-h-10 flex flex-row justify-between items-center p-2 theme-dark-container">
+			{#if pingData}
+				<p>{time}</p>
+				{:else}
+				<p>Loading...</p>
+			{/if}
+			{#if currentReading}
+				<p>
+					{currentReading.status == 0 ? 'On Duty' : currentReading.status == 1 ? 'Stopped' : 'Returning...'}
+				</p>
+				{:else}
+				<p>Loading...</p>
+			{/if}
+				<p>Ping</p>
 		</div>
-	{/if}
-	<div class="top-content w-full flex flex-row justify-between items-center p-2 theme-dark-container">
-		{#if pingData}
-			<p>{time}</p>
-			{:else}
-			<p>Loading...</p>
-		{/if}
-		{#if currentReading}
-			<p>
-				{currentReading.status == 0 ? 'On Duty' : currentReading.status == 1 ? 'Stopped' : 'Returning...'}
-			</p>
-			{:else}
-			<p>Loading...</p>
-		{/if}
-			<p>Ping</p>
-	</div>
-
-	<div class="flex flex-grow justify-start items-center content-stretch theme-dark-back">
+	
+		<div class="flex flex-grow justify-start items-center theme-dark-back overflow-hidden">
 			<div class="flex place-self-stretch flex-col w-20 justify-between items-center p-2 m-2 theme-dark-container rounded-md"> <!-- bg-gradient-to-b from-[#3e3e3e] from-0% to-[#313131] to-1% -->
 				<div class="flex flex-col w-full justify-center items-center">
 					<img src={logo} alt="TOSKR Logo" class="pb-2" />
@@ -134,13 +135,14 @@
 					{/if}
 				</div>
 			</div>
-
-			<main class="flex flex-col md:flex-row place-self-stretch justify-stretch items-center m-2 w-full">
+	
+			<main class="flex flex-col md:flex-row place-self-stretch justify-stretch items-center m-2 flex-grow gap-2 overflow-hidden">
 				{#if pingData}
 					{@render children()}
 				{:else}
 					<p>Loading...</p>
 				{/if}
 			</main>
+		</div>
 	</div>
 </div>

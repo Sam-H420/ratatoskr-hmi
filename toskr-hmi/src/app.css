@@ -10,6 +10,7 @@
 .theme-dark-container {
   background-color: #313131;
   color: #a0a0a0;
+  overflow: hidden;
 }
 
 .theme-dark-back {
