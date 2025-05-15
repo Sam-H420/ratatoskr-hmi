@@ -5,6 +5,8 @@
 	import BarButton from '../Components/BarButton.svelte';
 	import Win from '../Components/Win.svelte';
 
+	const serverUrl = 'http://172.26.197.108:18080';
+
 	/** @type {import('./$types').LayoutProps} */
 	let { children } = $props();
 
@@ -23,46 +25,35 @@
 
   onMount(async () => {
     // Initial data fetch
-		const pingResponse = await fetch('http://localhost:8000/connect');
+		const pingResponse = await fetch(`${serverUrl}/connect`);
 		pingData = await pingResponse.json();
-
-    const response = await fetch('http://localhost:8000/status');
-    currentReading = await response.json();
+		currentReading = pingData;
 
     // Set up SSE connection
-    pingSource = new EventSource('http://localhost:8000/ping');
+    pingSource = new EventSource(`${serverUrl}/ping`);
 		pingSource.addEventListener('ping', (event) => {
 			pingData = JSON.parse(event.data);
 			timeMs = Date.now();
 			seconds = Math.floor((timeMs / 1000) % 60);
 			minutes = Math.floor((timeMs / (1000 * 60)) % 60);
-			hours = Math.floor((timeMs / (1000 * 60 * 60)) % 24) - 5;
+			hours = Math.floor((timeMs / (1000 * 60 * 60)) % 24) + 19;
 			time = `${hours}:${minutes}:${seconds}`;
 		});
-		
-		eventSource = new EventSource('http://localhost:8000/statusupdate');
-    eventSource.addEventListener('status_update', (event) => {
+    pingSource.addEventListener('status_update', (event) => {
       currentReading = JSON.parse(event.data);
     });
 
     return () => {
-      // if (eventSource) eventSource.close();
+			if (pingSource) pingSource.close();
     };
   });
 
 	function stopToskr() {
-		fetch('http://localhost:8000/stop')
-			.then(response => response.json())
-			.then(data => {
-				console.log('Stop command sent:', data);
-			})
-			.catch(error => {
-				console.error('Error sending stop command:', error);
-			});		
+		fetch(`${serverUrl}/stop`);		
 	}
 
 	function startToskr() {
-		fetch('http://localhost:8000/start')
+		fetch(`${serverUrl}/start`)
 			.then(response => response.json())
 			.then(data => {
 				console.log('Start command sent:', data);
@@ -72,8 +63,8 @@
 			});		
 	}
 
-	function returnToskr() {
-		fetch('http://localhost:8000/return')
+	async function returnToskr() {
+		await fetch(`${serverUrl}/return`)
 			.then(response => response.json())
 			.then(data => {
 				console.log('Return command sent:', data);

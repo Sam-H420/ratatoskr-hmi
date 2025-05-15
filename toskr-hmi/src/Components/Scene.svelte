@@ -14,8 +14,8 @@
     const cellWidth = (area.width / scenary.length);  
     const cellHeight = (area.height / scenary[0].length);
 
-    for (let i = 0; i < scenary.length; i++) {
-      for (let j = 0; j < scenary[0].length; j++) {
+    for (let i = 0; i < scenary[0].length; i++) {
+      for (let j = 0; j < scenary.length; j++) {
         context.fillStyle = grid[i][j] ? 'black' : 'white';
         context.fillRect(i * cellWidth + scrolldiv.clientWidth/2 - cellWidth/2, j * cellHeight + scrolldiv.clientHeight/2 - cellHeight/2, 2*cellWidth, 2*cellHeight);
       }

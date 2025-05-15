@@ -5,6 +5,8 @@
   import NumberGauge from "../Components/NumberGauge.svelte";
   import MapCanvas from '../Components/MapCanvas.svelte';
 
+  const serverUrl = 'http://172.26.197.108:18080';
+
   let currentReading = $state(null);
   let rframeData = $state(null);
   let tasks = $state(null);
@@ -19,27 +21,27 @@
 
   onMount(async () => {
     // Initial data fetch
-    const response = await fetch('http://localhost:8000/current');
+    const response = await fetch(`${serverUrl}/motors`);
     currentReading = await response.json();
 
-    const rframe = await fetch('http://localhost:8000/frame');
+    const rframe = await fetch(`${serverUrl}/frame`);
     rframeData = await rframe.json();
 
-    const tasksResponse = await fetch('http://localhost:8000/tasks');
+    const tasksResponse = await fetch(`${serverUrl}/tasks`);
     tasks = await tasksResponse.json();
 
     // Set up SSE connection
-    eventSource = new EventSource('http://localhost:8000/stream');
+    eventSource = new EventSource(`${serverUrl}/telemetry`);
     eventSource.addEventListener('sensor_update', (event) => {
       currentReading = JSON.parse(event.data);
     });
 
-    frameSource = new EventSource('http://localhost:8000/vid');
-    frameSource.addEventListener('frame_update', (event) => {
+    frameSource = new EventSource(`${serverUrl}/videofeed`);
+    frameSource.addEventListener('video_feed', (event) => {
       rframeData = JSON.parse(event.data);
     });
 
-    tasksSource = new EventSource('http://localhost:8000/taskstream');
+    tasksSource = new EventSource(`${serverUrl}/taskupdates`);
     tasksSource.addEventListener('task_update', (event) => {
       tasks = JSON.parse(event.data);
     });
@@ -47,7 +49,11 @@
     return () => {
       if (eventSource) {
         eventSource.close();
+      }
+      if (frameSource) {
         frameSource.close();
+      }
+      if (tasksSource) {
         tasksSource.close();
       }
     };
@@ -63,7 +69,9 @@
       end: formData.get('end'),
       priority: formData.get('priority')
     };
-    fetch(`http://localhost:8000/tasks/create?id=${data.id}&name=${data.name}&start=${data.start}&end=${data.end}&priority=${data.priority}`)
+    fetch(`${serverUrl}/add_task?id=${data.id}&priority=${data.priority}&name=${data.name}&start=${data.start}&end=${data.end}`, 
+
+    )
       .then(response => response.json())
       .then(data => {
         console.log('Task created:', data);
@@ -132,12 +140,12 @@
                   </div>
                 </div>
                 <button onclick={() => {
-                  fetch(`http://localhost:8000/tasks/delete?id=${task.id}`)
+                  fetch(`${serverUrl}/delete_task?id=${task.id}`)
                   .then(response => response.json())
                   .then(data => {
                     console.log('Task deleted:', data);
                   })
-                }} aria-label="Deelete Task" class="theme-dark-window-button">
+                }} aria-label="Delete Task" class="theme-dark-window-button">
                   <div class="p-2 flex flex-col justify-center items-center">
                     <span class="cuida--trash-outline"></span>
                   </div>
