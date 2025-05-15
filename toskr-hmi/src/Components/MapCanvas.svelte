@@ -7,15 +7,6 @@
   import Toskr from './Toskr.svelte';
 
   const serverUrl = 'http://172.26.197.108:18080';
-  // const position = tweened([0.5, 0.5], { duration: 400, easing });
-
-  const grid = Array.from({ length: 8 }, () => Array(8).fill(0));
-  // Randomly set some cells to 1
-  for (let i = 0; i < 10; i++) {
-    const x = Math.floor(Math.random() * 8);
-    const y = Math.floor(Math.random() * 8);
-    grid[x][y] = 1;
-  }
 
   let area = $state({
     width: 500,
@@ -23,26 +14,22 @@
   });
 
   let scenary = $state(null);
-  let scenarySource = $state(undefined);
-
   let toskrPos = $state(null);
-	let toskrPosSource = $state(undefined);
+  let mappingSource = $state(undefined);
   
   onMount(async () => {
     const scrolldiv = document.getElementById('canvas-container');
-    const scResponse = await fetch(`${serverUrl}/scenary`);
-    scenary = await scResponse.json();
+    const scResponse = await fetch(`${serverUrl}/mapping`);
+    const jsonRes = await scResponse.json();
 
-    const toskResponse = await fetch(`${serverUrl}/toskr`);
-    toskrPos = await toskResponse.json();
+    scenary = jsonRes;
+    toskrPos = jsonRes;
 
-    // scenarySource = new EventSource(`${serverUrl}/sceneupdates`);
-    // scenarySource.addEventListener('scene_update', (event) => {
-    //   scenary = JSON.parse(event.data);
-    // });
-
-    toskrPosSource = new EventSource(`${serverUrl}/positionupdates`);
-    toskrPosSource.addEventListener('position_update', (event) => {
+    mappingSource = new EventSource(`${serverUrl}/mupdates`);
+    mappingSource.addEventListener('scene_update', (event) => {
+      scenary = JSON.parse(event.data);
+    });
+    mappingSource.addEventListener('position_update', (event) => {
       toskrPos = JSON.parse(event.data);
     });
 

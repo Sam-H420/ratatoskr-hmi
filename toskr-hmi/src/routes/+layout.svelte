@@ -103,7 +103,7 @@
 		</div>
 	
 		<div class="flex flex-grow justify-start items-center theme-dark-back overflow-hidden">
-			<div class="flex place-self-stretch flex-col w-20 justify-between items-center p-2 m-2 theme-dark-container rounded-md"> <!-- bg-gradient-to-b from-[#3e3e3e] from-0% to-[#313131] to-1% -->
+			<div class="flex place-self-stretch flex-col w-20 justify-between items-center p-2 m-2 theme-dark-container rounded-md">
 				<div class="flex flex-col w-full justify-center items-center">
 					<img src={logo} alt="TOSKR Logo" class="pb-2" />
 					<BarButton title="About" iconClass="cuida--info-outline" onclick={() => {
