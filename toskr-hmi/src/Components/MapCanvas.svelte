@@ -6,7 +6,7 @@
   import Scene from './Scene.svelte';
   import Toskr from './Toskr.svelte';
 
-  const serverUrl = 'http://localhost:18080';
+  const serverUrl = 'http://192.168.1.16:18080';
 
   let area = $state({
     width: 500,
@@ -19,13 +19,13 @@
   
   onMount(async () => {
     const scrolldiv = document.getElementById('canvas-container');
-    const scResponse = await fetch(`${serverUrl}/mapping`);
+    const scResponse = await fetch(`/api/mapping`);
     const jsonRes = await scResponse.json();
 
     scenary = jsonRes;
     toskrPos = jsonRes;
 
-    mappingSource = new EventSource(`${serverUrl}/mupdates`);
+    mappingSource = new EventSource(`/api/mupdates`);
     mappingSource.addEventListener('scene_update', (event) => {
       scenary = JSON.parse(event.data);
     });
