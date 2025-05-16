@@ -6,7 +6,7 @@
   import Scene from './Scene.svelte';
   import Toskr from './Toskr.svelte';
 
-  const serverUrl = 'http://172.26.197.108:18080';
+  const serverUrl = 'http://localhost:18080';
 
   let area = $state({
     width: 500,

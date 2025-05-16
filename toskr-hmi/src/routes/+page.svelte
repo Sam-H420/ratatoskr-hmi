@@ -5,7 +5,7 @@
   import NumberGauge from "../Components/NumberGauge.svelte";
   import MapCanvas from '../Components/MapCanvas.svelte';
 
-  const serverUrl = 'http://172.26.197.108:18080';
+  const serverUrl = 'http://localhost:18080';
 
   let currentReading = $state(null);
   let rframeData = $state(null);

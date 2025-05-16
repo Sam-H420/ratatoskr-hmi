@@ -5,12 +5,15 @@
 	import BarButton from '../Components/BarButton.svelte';
 	import Win from '../Components/Win.svelte';
 
-	const serverUrl = 'http://172.26.197.108:18080';
+	const serverUrl = 'http://localhost:18080';
 
 	/** @type {import('./$types').LayoutProps} */
 	let { children } = $props();
 
 	let about = $state(false);
+	let debug = $state(false);
+
+	let st = $state(false);
 
 	let pingData = $state(null);
 	let pingSource = $state(undefined);
@@ -49,39 +52,66 @@
   });
 
 	function stopToskr() {
-		fetch(`${serverUrl}/stop`);		
+		fetch(`${serverUrl}/stop`);	
 	}
 
 	function startToskr() {
-		fetch(`${serverUrl}/start`)
-			.then(response => response.json())
-			.then(data => {
-				console.log('Start command sent:', data);
-			})
-			.catch(error => {
-				console.error('Error sending start command:', error);
-			});		
+		fetch(`${serverUrl}/start`);
 	}
 
-	async function returnToskr() {
-		await fetch(`${serverUrl}/return`)
-			.then(response => response.json())
-			.then(data => {
-				console.log('Return command sent:', data);
-			})
-			.catch(error => {
-				console.error('Error sending return command:', error);
-			});		
+	function returnToskr() {
+		fetch(`${serverUrl}/return`);
+	}
+
+	function upDebugCoordinates(event) {
+		event.preventDefault();
+		const formData = new FormData(event.target);
+		const data = {
+			x: formData.get('x'),
+			y: formData.get('y')
+		};
+		fetch(`${serverUrl}/move?x=${data.x}&y=${data.y}`);
+	}
+	
+	function upDebugState(stat) {
+		fetch(`${serverUrl}/debug?debug=${stat}`);
 	}
 </script>
 
 <div class="app h-dvh max-h-dvh flex overflow-hidden">
 	<div class="flex flex-col h-full w-full overflow-hidden">
+		{#if debug}
+			<div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-[#242424b4] z-50">
+				<div class="absolute flex justify-center items-center theme-dark-container rounded-md justify-self-center">
+					<Win title="Debug" onclick={() => { debug = !debug; }} icon="cuida--x-outline">
+						<div>
+							<form onsubmit={upDebugCoordinates} class="flex flex-col w-full h-full justify-center items-center p-4 gap-2">
+								<input type="number" id="x" name="x" placeholder="X" required class="theme-dark-input" />
+								<input type="number" id="y" name="y" placeholder="Y" required class="theme-dark-input" />
+								<button type="submit" class="theme-dark-window-button p-2">Send</button>
+							</form>
+							<div class="flex flex-col w-full h-full justify-center items-center p-4 gap-2">
+								{#if st}
+									<BarButton title="Stop" onclick={() => { upDebugState(0); st = false; }} iconClass="cuida--power-outline" />
+								{:else}
+									<BarButton title="Start" onclick={() => { upDebugState(1); st = true; }} iconClass="cuida--power-outline text-[#80b62e]" />
+								{/if}
+							</div>
+						</div>
+					</Win>
+				</div>
+			</div>
+		{/if}
 		{#if about}
 			<div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-[#242424b4] z-50">
 				<div class="absolute flex justify-center items-center theme-dark-container rounded-md justify-self-center">
 					<Win title="About" onclick={() => { about = !about; }} icon="cuida--x-outline">
-						<iframe class="p-2" width="560" height="315" src="https://www.youtube.com/embed/fKopy74weus?si=pjRPMNFXNZkJtQCX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+						<div class="flex flex-col w-full h-full justify-center items-center p-4 gap-2">
+							<p class="text-center">TOSKR HMI</p>
+							<p class="text-center">Version 1.0</p>
+							<p class="text-center">Developed by RATATOSKR Team</p>
+							<p class="text-center">2025</p>
+						</div>
 					</Win>
 				</div>
 			</div>
@@ -109,6 +139,10 @@
 					<BarButton title="About" iconClass="cuida--info-outline" onclick={() => {
 						about = !about;
 						console.log('About clicked');
+					}} />
+					<BarButton title="Debug" iconClass="cuida--bullseye-outline" onclick={() => {
+						debug = !debug;
+						console.log('Debug clicked');
 					}} />
 				</div>
 				<div>
