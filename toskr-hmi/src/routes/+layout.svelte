@@ -5,7 +5,7 @@
 	import BarButton from '../Components/BarButton.svelte';
 	import Win from '../Components/Win.svelte';
 
-	const serverUrl = 'http://localhost:18080';
+	const serverUrl = 'http://192.168.1.16:18080';
 
 	/** @type {import('./$types').LayoutProps} */
 	let { children } = $props();
@@ -28,12 +28,12 @@
 
   onMount(async () => {
     // Initial data fetch
-		const pingResponse = await fetch(`${serverUrl}/connect`);
+		const pingResponse = await fetch(`/api/connect`);
 		pingData = await pingResponse.json();
 		currentReading = pingData;
 
     // Set up SSE connection
-    pingSource = new EventSource(`${serverUrl}/ping`);
+    pingSource = new EventSource(`/api/ping`);
 		pingSource.addEventListener('ping', (event) => {
 			pingData = JSON.parse(event.data);
 			timeMs = Date.now();
@@ -52,15 +52,15 @@
   });
 
 	function stopToskr() {
-		fetch(`${serverUrl}/stop`);	
+		fetch(`/api/stop`);	
 	}
 
 	function startToskr() {
-		fetch(`${serverUrl}/start`);
+		fetch(`/api/start`);
 	}
 
 	function returnToskr() {
-		fetch(`${serverUrl}/return`);
+		fetch(`/api/return`);
 	}
 
 	function upDebugCoordinates(event) {
@@ -70,11 +70,11 @@
 			x: formData.get('x'),
 			y: formData.get('y')
 		};
-		fetch(`${serverUrl}/move?x=${data.x}&y=${data.y}`);
+		fetch(`/api/move?x=${data.x}&y=${data.y}`);
 	}
 	
 	function upDebugState(stat) {
-		fetch(`${serverUrl}/debug?debug=${stat}`);
+		fetch(`/api/debug?debug=${stat}`);
 	}
 </script>
 

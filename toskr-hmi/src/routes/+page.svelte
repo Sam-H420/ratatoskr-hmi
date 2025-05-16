@@ -5,7 +5,7 @@
   import NumberGauge from "../Components/NumberGauge.svelte";
   import MapCanvas from '../Components/MapCanvas.svelte';
 
-  const serverUrl = 'http://localhost:18080';
+  const serverUrl = 'http://192.168.1.16:18080';
 
   let currentReading = $state(null);
   let rframeData = $state(null);
@@ -21,27 +21,27 @@
 
   onMount(async () => {
     // Initial data fetch
-    const response = await fetch(`${serverUrl}/motors`);
+    const response = await fetch(`/api/motors`);
     currentReading = await response.json();
 
-    const rframe = await fetch(`${serverUrl}/frame`);
+    const rframe = await fetch(`/api/frame`);
     rframeData = await rframe.json();
 
-    const tasksResponse = await fetch(`${serverUrl}/tasks`);
+    const tasksResponse = await fetch(`/api/tasks`);
     tasks = await tasksResponse.json();
 
     // Set up SSE connection
-    eventSource = new EventSource(`${serverUrl}/telemetry`);
+    eventSource = new EventSource(`/api/telemetry`);
     eventSource.addEventListener('sensor_update', (event) => {
       currentReading = JSON.parse(event.data);
     });
 
-    frameSource = new EventSource(`${serverUrl}/videofeed`);
+    frameSource = new EventSource(`/api/videofeed`);
     frameSource.addEventListener('video_feed', (event) => {
       rframeData = JSON.parse(event.data);
     });
 
-    tasksSource = new EventSource(`${serverUrl}/taskupdates`);
+    tasksSource = new EventSource(`/api/taskupdates`);
     tasksSource.addEventListener('task_update', (event) => {
       tasks = JSON.parse(event.data);
     });
@@ -69,7 +69,7 @@
       end: formData.get('end'),
       priority: formData.get('priority')
     };
-    fetch(`${serverUrl}/add_task?id=${data.id}&priority=${data.priority}&name=${data.name}&start=${data.start}&end=${data.end}`, 
+    fetch(`/api/add_task?id=${data.id}&priority=${data.priority}&name=${data.name}&start=${data.start}&end=${data.end}`, 
 
     )
       .then(response => response.json())
@@ -140,7 +140,7 @@
                   </div>
                 </div>
                 <button onclick={() => {
-                  fetch(`${serverUrl}/delete_task?id=${task.id}`)
+                  fetch(`/api/delete_task?id=${task.id}`)
                   .then(response => response.json())
                   .then(data => {
                     console.log('Task deleted:', data);
