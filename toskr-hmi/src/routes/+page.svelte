@@ -161,7 +161,7 @@
   </div>
 </div>
 
-<div class="flex flex-col md:w-1/3 md:h-full w-full h-full overflow-hidden">
+<!-- <div class="flex flex-col md:w-1/3 md:h-full w-full h-full overflow-hidden">
   <div class="flex aspect-3/4 w-full mb-1 items-center justify-center theme-dark-container rounded-md">
     <Win title="Camera">
       {#if rframeData}
@@ -174,4 +174,4 @@
       <MapCanvas />
     </Win>
   </div>
-</div>
+</div> -->
