@@ -125,6 +125,16 @@
       </Win>
     </div>
   </div>
+  <div class="flex aspect-3/4 w-full mb-1 items-center justify-center theme-dark-container rounded-md">
+    <Win title="Camera">
+      {#if rframeData}
+        <img src="data:image/jpg;base64,{rframeData.frame}" alt="">
+      {/if}
+    </Win>
+  </div>
+</div>
+
+<div class="flex flex-col md:w-1/3 md:h-full w-full h-full overflow-hidden">
   <div class="md:flex md:static flex-row h-1/2 w-full mt-1 hidden absolute theme-dark-container rounded-md">
     <Win title="Tasks" onclick={() => {messageShown = true;}} icon="cuida--plus-outline">
       <div class="flex h-full w-full overflow-y-scroll">
@@ -157,21 +167,12 @@
           <p>Loading...</p>
         {/if}
       </div>
-      </Win>
+    </Win>
   </div>
 </div>
 
-<!-- <div class="flex flex-col md:w-1/3 md:h-full w-full h-full overflow-hidden">
-  <div class="flex aspect-3/4 w-full mb-1 items-center justify-center theme-dark-container rounded-md">
-    <Win title="Camera">
-      {#if rframeData}
-        <img src="data:image/jpg;base64,{rframeData.frame}" alt="">
-      {/if}
+<!-- <div class="relative flex w-full h-full mt-1 items-center justify-center theme-dark-container rounded-md">
+  <Win title="Map">
+    <MapCanvas />
     </Win>
-  </div>
-  <div class="relative flex w-full h-full mt-1 items-center justify-center theme-dark-container rounded-md">
-    <Win title="Map">
-      <MapCanvas />
-    </Win>
-  </div>
-</div> -->
+    </div> -->
