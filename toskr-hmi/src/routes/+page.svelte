@@ -100,7 +100,7 @@
   </div>
 {/if}
 
-<div class="flex flex-col md:w-2/3 md:h-full w-full h-1/3">
+<div class="flex flex-col md:w-2/3 md:h-full w-full h-1/3 gap-1">
   <div class="flex flex-row md:h-1/2 h-full w-full mb-1">
     <div class="flex w-1/2 mr-1 justify-center items-center theme-dark-container rounded-md">
       <Win title="Speed">
@@ -135,7 +135,7 @@
 </div>
 
 <div class="flex flex-col md:w-1/3 md:h-full w-full h-full overflow-hidden">
-  <div class="md:flex md:static flex-row h-1/2 w-full mt-1 hidden absolute theme-dark-container rounded-md">
+  <div class="md:flex md:static flex-row h-full w-full mt-1 hidden absolute theme-dark-container rounded-md">
     <Win title="Tasks" onclick={() => {messageShown = true;}} icon="cuida--plus-outline">
       <div class="flex h-full w-full overflow-y-scroll">
         {#if tasks}
