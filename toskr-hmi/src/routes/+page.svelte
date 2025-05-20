@@ -32,7 +32,7 @@
 
     // Set up SSE connection
     eventSource = new EventSource(`/api/telemetry`);
-    eventSource.addEventListener('sensor_update', (event) => {
+    eventSource.addEventListener('motor_updates', (event) => {
       currentReading = JSON.parse(event.data);
     });
 
