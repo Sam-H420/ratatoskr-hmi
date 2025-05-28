@@ -5,8 +5,8 @@
 </script><script>
   export let value = 0
   export let arrows = ''
-  export let thresholds = '70,90'
-  export let colors = '#525C71,#e8523b'
+  export let thresholds = '30,100'
+  export let colors = '#e8523b,#5fb5cf'
 
   let color
   let rotate
@@ -42,7 +42,7 @@
       style="transform:rotate(-{rotate}deg);box-shadow: inset 0 0 0 1em {color};"
     ></div>
     <div class="gauge-white"></div>
-    <div class="gauge-value">{value}</div>
+    <div class="gauge-value">{value}%</div>
   </div>
 </div>
 
@@ -64,7 +64,7 @@
   }
   .gauge-bg {
     z-index: 1;
-    box-shadow: inset 0 0 0 1em #4b4b4b;
+    box-shadow: inset 0 0 0 1em #f0f0f0;
   }
   .gauge-max {
     position: absolute;
@@ -113,6 +113,6 @@
     width: 75%;
     height: 150%;
     border-radius: 100%;
-    background: #313131;
+    background: #ffffff;
   }
 </style>
