@@ -104,7 +104,7 @@
   <div class="flex flex-row md:h-1/2 h-full w-full mb-1">
     <div class="flex w-1/2 mr-1 justify-center items-center theme-dark-container rounded-md">
       <Win title="Speed">
-        <div class="flex" style="font-size: 4em;">
+        <div class="flex p-2" style="font-size: 4em;">
           {#if currentReading}
           <NumberGauge value={currentReading.speed} arrows={currentReading.speed} />
           {:else}
@@ -115,7 +115,7 @@
     </div>
     <div class="flex w-1/2 ml-1 justify-center items-center theme-dark-container rounded-md">
       <Win title="Battery">
-        <div class="flex" style="font-size: 4em;">
+        <div class="flex p-2" style="font-size: 4em;">
           {#if currentReading}
             <NumberGauge value={currentReading.battery} arrows={currentReading.battery} />
           {:else}
